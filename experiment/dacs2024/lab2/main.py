@@ -215,7 +215,7 @@ def main():
         Run the complete EDA flow for final PPA
     """
 
-    design_config = get_test_design_config()
+    design_config = get_design_config()
     tech_config = get_tech_config()
     syn_options = get_syn_options()
     pnr_options = get_pnr_options()
