@@ -3,6 +3,7 @@ from env import *
 import json
 import random
 
+from metric import MetricParser
 from tech.asap7 import Asap7Library
 from flow.genus_innovus import GenusInnovusFlow
 from utils import create_hash
@@ -229,7 +230,10 @@ def main():
         rundir=rundir,
     )
 
-    result = flow.run()
+    flow.run()
+
+    result = MetricParser(rundir).generate_report()
+    result['clk_period_ns'] = syn_options['clk_period_ns']
 
     with open(os.path.join(rundir, 'result.json'), 'w') as f:
         json.dump(result, f, indent=4)
