@@ -75,6 +75,16 @@ class InnovusManager(BaseManager):
             return self.generate_cts_code()
         elif name == 'routing':
             return self.generate_routing_code()
+        elif name == 'extract_rc':
+            return self.generate_extract_rc_code()
+        elif name == 'chipdone_slack':
+            return self.generate_chipdone_slack_code()
+        elif name == 'chipdone_static_power':
+            return self.generate_chipdone_static_power_code()
+        elif name == 'floorplan_area':
+            return self.generate_floorplan_area_code()
+        elif name == 'run_drv':
+            return self.generate_run_drv_code()
         else:
             raise NotImplementedError("Script %s is not implemented" % name)
 
@@ -813,7 +823,7 @@ report_power \
     power_report_path,
 )
     
-    return codes
+        return codes
 
     def generate_floorplan_area_code(self) -> str:
         """
@@ -828,7 +838,7 @@ report_power \
 set file [open "%s" w]
 puts $file [dbGet top.fPlan.area]
 close $file
-"""
+""" % area_report_path
 
         return codes
 

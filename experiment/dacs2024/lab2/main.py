@@ -63,6 +63,17 @@ def get_design_config() -> dict:
     return design_config
 
 
+def get_test_design_config() -> dict:
+    design_config = {
+        'verilog_files': [os.path.join(CLDSE_ROOT, 'design/example/gcd/gcd.v')],
+        'top_module': 'gcd',
+        'clk_name': 'clk',
+        'clk_port_name': 'clk',
+    }
+
+    return design_config
+
+
 def get_tech_config() -> dict:
     """
         get standard cell library configuration
@@ -122,6 +133,11 @@ def get_pnr_options() -> dict:
             'placement',
             'cts',
             'routing',
+            'extract_rc',
+            'chipdone_slack',
+            'chipdone_static_power',
+            'floorplan_area',
+            'run_drv',
         ],
         'runmode': 'fast',  # use 'skip' if you don't need to run physical design, useful for debugging
         
@@ -198,7 +214,7 @@ def main():
         Run the complete EDA flow for final PPA
     """
 
-    design_config = get_design_config()
+    design_config = get_test_design_config()
     tech_config = get_tech_config()
     syn_options = get_syn_options()
     pnr_options = get_pnr_options()
