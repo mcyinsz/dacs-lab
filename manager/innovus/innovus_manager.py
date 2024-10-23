@@ -690,14 +690,161 @@ report_area -detail > %s
         return codes
 
     def generate_power_report_code(self, stage: str) -> str:
+        """
+            Power report code
+        """
         power_report_path = os.path.join(self.report_dir, f'{stage}_power.rpt')
 
         codes = """
 
 # -------------------------------------------------------------
-# Report area
+# Report power
 # -------------------------------------------------------------
 report_power -hierarchy all > %s
 """ % power_report_path
+
+        return codes
+
+    def generate_extract_rc_code(self) -> str:
+        """
+            Generate extract RC script
+        """
+        spef_path = os.path.join(self.data_dir, 'rc_corner.spef.gz')
+
+        codes = """
+# -------------------------------------------------------------
+# Extract RC
+# -------------------------------------------------------------
+reset_parasitics
+extractRC
+rcOut -rc_corner rc_corner -spef %s
+""" % spef_path
+
+        return codes
+
+    def generate_chipdone_slack_code(self) -> str:
+        """
+            Generate chipdone timing slack script
+        """
+        setup_slack_report_path = os.path.join(self.report_dir, 'chipdone_setup_slack_summary.rpt')
+        hold_slack_report_path  = os.path.join(self.report_dir, 'chipdone_hold_slack_summary.rpt')
+
+        codes = """
+# -------------------------------------------------------------
+# Chip Done Timing
+# -------------------------------------------------------------
+setAnalysisMode -checkType setup
+calNegSlack > %s
+setAnalysisMode -checkType hold
+calNegSlack > %s
+""" % (
+    setup_slack_report_path,
+    hold_slack_report_path,
+)
+
+        return codes
+
+    def generate_chipdone_static_power_code(self) -> str:
+        """
+            Generate chipdone power script
+        """
+        power_report_path = os.path.join(self.report_dir, 'chipdone_static_power.rpt')
+        power_data_dir = os.path.join(self.data_dir, 'static_power')
+        spef_path = os.path.join(self.data_dir, 'rc_corner.spef.gz')
+
+        codes = """
+#------------------------------------------------------
+# set multi CPU
+# ------------------------------------------------------
+setMultiCpuUsage -localCpu  4
+
+#-----------------------------------------------------------------------
+# Read spef file
+#-----------------------------------------------------------------------
+spefIn -rc_corner rc_corner %s
+
+#-----------------------------------------------------------------------
+# Static Power Analysis
+#-----------------------------------------------------------------------
+set_power_analysis_mode \
+    -reset
+set_power_analysis_mode \
+    -leakage_power_view 	max_view \
+    -dynamic_power_view        	max_view \
+    -write_static_currents      true \
+    -binary_db_name             staticPower.db \
+    -create_binary_db           true \
+    -method                     static
+
+#-----------------------------------------------------------------------
+# set toggle rate on the rst pin and propagate activities:
+#-----------------------------------------------------------------------
+set_switching_activity \
+    -reset
+
+set_switching_activity \
+    -input_port                 rst \
+    -activity                   0.5 \
+    -duty                       0.5
+
+propagate_activity
+
+#-----------------------------------------------------------------------
+# set default activities for all nets/pins/etc for unclocked nets
+#-----------------------------------------------------------------------
+set_default_switching_activity \
+    -input_activity             0.5 \
+    -period                     4.0 \
+    -clock_gates_output_ratio   0.5
+
+#-----------------------------------------------------------------------
+# define output directory
+#-----------------------------------------------------------------------
+set_power_output_dir            %s
+
+#-----------------------------------------------------------------------
+# run power analysis
+#-----------------------------------------------------------------------
+report_power \
+    -outfile                    %s
+""" % (
+    spef_path,
+    power_data_dir,
+    power_report_path,
+)
+    
+    return codes
+
+    def generate_floorplan_area_code(self) -> str:
+        """
+            Generate chipdone area script
+        """
+        area_report_path = os.path.join(self.report_dir, 'floorplan_area.rpt')
+
+        codes = """
+# -------------------------------------------------------------
+# floorplan area
+# -------------------------------------------------------------
+set file [open "%s" w]
+puts $file [dbGet top.fPlan.area]
+close $file
+"""
+
+        return codes
+
+    def generate_run_drv_code(self) -> str:
+        """
+            Generate run DRV script
+        """
+        drv_report_path = os.path.join(self.report_dir, 'chipdone_drv.rpt')
+
+        codes = """
+#-------------------------------------------------------------
+# verify regular drc
+#-------------------------------------------------------------
+set_verify_drc_mode -reset
+set_verify_drc_mode -check_only regular -limit 100000 -report %s
+verify_drc
+""" % drv_report_path
 
         return codes
