@@ -413,10 +413,10 @@ if { [get_db lib_cells %s] ne "" } {
 # -------------------------------------------------------------
 # Synthesize the design to target library
 # -------------------------------------------------------------
-set syn_generic_effort %s
+set_db syn_generic_effort %s
 syn_generic %s
 
-set syn_map_effort %s
+set_db syn_map_effort %s
 syn_map %s
 """ % (
     self.configs.get('syn_generic_effort', 'medium'),
@@ -426,7 +426,7 @@ syn_map %s
 )
         if self.configs.get('syn_opt_effort', None):
             codes += """
-set syn_opt_effort %s
+set_db syn_opt_effort %s
 syn_opt %s
 """ % (
     self.configs.get('syn_opt_effort'),
