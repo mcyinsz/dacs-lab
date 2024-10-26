@@ -2,8 +2,10 @@ from env import *
 
 import json
 import random
+from time import time
 
 from metric import MetricParser
+from space import BaseDesignSpace, CADENCE_GENUS_DESIGN_SPACE, CADENCE_INNOVUS_DESIGN_SPACE
 from tech.asap7 import Asap7Library
 from flow.genus_innovus import GenusInnovusFlow
 from utils import create_hash
@@ -117,6 +119,11 @@ def get_syn_options() -> dict:
         "max_capacitance_ff": None,
     }
 
+    # TODO: we randomly sample synthesis options here
+    # you can use other methods to sample the synthesis options
+    genus_config_space = BaseDesignSpace(CADENCE_GENUS_DESIGN_SPACE)
+    syn_configs.update(genus_config_space.generate_design_point_by_random(seed=int(time())))
+
     return syn_configs
 
 
@@ -197,6 +204,11 @@ def get_pnr_options() -> dict:
 
     }
 
+    # TODO: we randomly sample pnr options here
+    # you can use other methods to sample the pnr options
+    innovus_config_space = BaseDesignSpace(CADENCE_INNOVUS_DESIGN_SPACE)
+    pnr_configs.update(innovus_config_space.generate_design_point_by_random(seed=int(time())))
+
     return pnr_configs
 
 
@@ -219,6 +231,12 @@ def main():
     tech_config = get_tech_config()
     syn_options = get_syn_options()
     pnr_options = get_pnr_options()
+
+    with open(os.path.join(rundir, 'config.json'), 'w') as f:
+        json.dump({
+            'syn_options': syn_options,
+            'pnr_options': pnr_options,
+        }, f, indent=4)
 
     rundir = get_rundir(syn_options, pnr_options)
 
