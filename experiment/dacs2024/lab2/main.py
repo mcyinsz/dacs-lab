@@ -3,12 +3,13 @@ from env import *
 import json
 import random
 from time import time
+from multiprocessing import Pool
 
 from metric import MetricParser
 from space import BaseDesignSpace, CADENCE_GENUS_DESIGN_SPACE, CADENCE_INNOVUS_DESIGN_SPACE
 from tech.asap7 import Asap7Library
 from flow.genus_innovus import GenusInnovusFlow
-from utils import create_hash
+from utils import create_hash, mkdir
 
 
 def get_design_config() -> dict:
@@ -222,7 +223,7 @@ def get_rundir(syn_options: dict, pnr_options: dict) -> str:
     return rundir
 
 
-def main():
+def main(*args, **kwargs):
     """
         Run the complete EDA flow for final PPA
     """
@@ -232,13 +233,14 @@ def main():
     syn_options = get_syn_options()
     pnr_options = get_pnr_options()
 
+    rundir = get_rundir(syn_options, pnr_options)
+    mkdir(rundir)
+
     with open(os.path.join(rundir, 'config.json'), 'w') as f:
         json.dump({
             'syn_options': syn_options,
             'pnr_options': pnr_options,
         }, f, indent=4)
-
-    rundir = get_rundir(syn_options, pnr_options)
 
     flow = GenusInnovusFlow(
         design_config=design_config,
@@ -260,4 +262,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    with Pool(32) as p:
+        p.map(main, range(1000))
