@@ -174,7 +174,7 @@ CADENCE_INNOVUS_DESIGN_SPACE = [
     {
         'name': 'place_detail_wire_length_opt_effort',
         'type': 'categorical',
-        'choices': ['low', 'medium', 'high'],
+        'choices': ['none', 'medium', 'high'],
     },
     {
         'name': 'place_global_auto_blockage_in_channel',
@@ -209,7 +209,7 @@ CADENCE_INNOVUS_DESIGN_SPACE = [
     {
         'name': 'place_global_cong_effort',
         'type': 'categorical',
-        'choices': ['low', 'medium', 'high', 'extreme', 'auto'],
+        'choices': ['low', 'medium', 'high', 'auto'],
     },
     {
         'name': 'place_global_clock_gate_aware',
