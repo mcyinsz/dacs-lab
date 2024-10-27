@@ -529,21 +529,30 @@ reportCongestion -overflow
         """
         codes = ""
 
-        cts_inv_cells = map(lambda x: ('*/' + x) if not x.startswith('*/') else x, self.configs.get('cts_inv_cells', []))
-        cts_inv_cells = ' '.join(cts_inv_cells)
+        cts_inv_cells = self.configs.get('cts_inv_cells', [])
+        cts_inv_cells = "{" + ' '.join(cts_inv_cells) + "}"
+
+        cts_buf_cells = self.configs.get('cts_buf_cells', [])
+        cts_buf_cells = "{" + ' '.join(cts_buf_cells) + "}"
 
         codes += """
 # -------------------------------------------------------------
 # set cts opt use cells
 # -------------------------------------------------------------
 set_ccopt_property use_inverters true
-# FIXME: get_lib_cells have strange return values
-# set cts_inv_cells [list %s]
-# foreach lib_cell $cts_inv_cells {
-#     setDontUse $lib_cell false
-# }
-# set_ccopt_property inverter_cells [get_db lib_cells $cts_inv_cells]
-""" % cts_inv_cells
+
+set cts_inv_cells [split %s]
+foreach lib_cell $cts_inv_cells {
+    setDontUse $lib_cell false
+}
+set_ccopt_property inverter_cells %s
+
+set cts_buf_cells [split %s]
+foreach lib_cell $cts_buf_cells {
+    setDontUse $lib_cell false
+}
+set_ccopt_property buffer_cells %s
+""" % (cts_inv_cells, cts_inv_cells, cts_buf_cells, cts_buf_cells)
         
         codes += """
 # -------------------------------------------------------------
