@@ -10,7 +10,7 @@ LAB2_ROOT = os.path.join(CLDSE_ROOT, 'experiment/dacs2024/lab2')
 
 RESULT_DIR = os.path.join(LAB2_ROOT, 'results')
 
-ASAP7_ROOT = '/root/asap7'
+SKY130_ROOT = os.path.join(CLDSE_ROOT, 'experiment/dacs2024/lab2/pdk')
 
 GENUS_BIN = '/opt/cadence/GENUS20.12.001/bin/genus'
 

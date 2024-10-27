@@ -7,7 +7,7 @@ from multiprocessing import Pool
 
 from metric import MetricParser
 from space import BaseDesignSpace, CADENCE_GENUS_DESIGN_SPACE, CADENCE_INNOVUS_DESIGN_SPACE
-from tech.asap7 import Asap7Library
+from tech.sky130 import Sky130Library
 from flow.genus_innovus import GenusInnovusFlow
 from utils import create_hash, mkdir
 
@@ -82,7 +82,7 @@ def get_tech_config() -> dict:
     """
         get standard cell library configuration
     """
-    return Asap7Library(ASAP7_ROOT).to_dict()
+    return Sky130Library(SKY130_ROOT).to_dict()
 
 
 def get_syn_options() -> dict:
@@ -228,7 +228,8 @@ def main(*args, **kwargs):
         Run the complete EDA flow for final PPA
     """
 
-    design_config = get_design_config()
+    design_config = get_test_design_config()
+    # design_config = get_design_config()
     tech_config = get_tech_config()
     syn_options = get_syn_options()
     pnr_options = get_pnr_options()
@@ -262,6 +263,6 @@ def main(*args, **kwargs):
 
 
 if __name__ == '__main__':
-    # main()
-    with Pool(32) as p:
-        p.map(main, range(1000))
+    main()
+    # with Pool(32) as p:
+        # p.map(main, range(1000))

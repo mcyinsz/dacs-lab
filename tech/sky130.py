@@ -113,8 +113,8 @@ class Sky130Library(StdcellLibrary):
         'place_site': 'unithd',
 
         # powerplan
-        'pwr_port': 'VPB VPWR',
-        'gnd_port': 'VGND VNB',
+        'pwr_port': '"VPB VPWR"',
+        'gnd_port': '"VGND VNB"',
         'stripe_width': 6,
         'stripe_spacing': 2,
         'stripe_distance': 30,
