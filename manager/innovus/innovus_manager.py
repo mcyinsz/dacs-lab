@@ -303,10 +303,6 @@ floorPlan -site %s -su 1 %f 1 1 1 1
             For simplicity, we place these pins during placement, and do layer assignment.
         """
         codes += """
-# -------------------------------------------------------------
-# Place the block port
-# -------------------------------------------------------------
-setPlaceMode -place_global_place_io_pins true
 """
         """
             Place large macros and hierarchical modules.
@@ -487,6 +483,12 @@ setPlaceMode -place_global_cong_effort %s
 setPlaceMode -place_global_max_density %.3f
 setPlaceMode -place_global_clock_gate_aware %s
 setPlaceMode -place_global_uniform_density %s
+
+# -------------------------------------------------------------
+# Place the block port
+# -------------------------------------------------------------
+setPlaceMode -place_global_place_io_pins true
+
 """ % (
     self.configs.get('route_max_layer'),  # early global routing use same layer as detailed routing
     self.configs.get('route_min_layer'),
@@ -623,11 +625,14 @@ setAnalysisMode -analysisType onChipVariation
 
 # FIXME: many routing configuration still missing!
 #        They are now just copied from the example script
-setNanoRouteMode -quiet -drouteEndIteration 20
+setNanoRouteMode -quiet -drouteEndIteration 40
 setNanoRouteMode -quiet -drouteFixAntenna true
 setNanoRouteMode -quiet -drouteUseMultiCutViaEffort medium
 setNanoRouteMode -quiet -drouteMinSlackForWireOptimization 0.1
 setDelayCalMode -engine default -siAware true
+
+setDesignMode -topRoutingLayer 6
+setDesignMode -bottomRoutingLayer 2
 """
 
         codes += """
