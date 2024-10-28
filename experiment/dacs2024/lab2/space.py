@@ -137,21 +137,21 @@ CADENCE_GENUS_DESIGN_SPACE = [
         'type': 'categorical',
         'choices': [None, 'low', 'medium', 'high'],
     },
-    {
-        'name': 'max_fanout',
-        'type': 'categorical',
-        'choices': [None, 10, 20, 30],
-    },
-    {
-        'name': 'max_transition_ns',
-        'type': 'categorical',
-        'choices': [None, 0.1, 0.2, 0.3],
-    },
-    {
-        'name': 'max_capacitance_ff',
-        'type': 'categorical',
-        'choices': [None, 0.1, 0.2, 0.3],
-    }
+    # {
+    #     'name': 'max_fanout',
+    #     'type': 'categorical',
+    #     'choices': [None, 10, 20, 30],
+    # },
+    # {
+    #     'name': 'max_transition_ns',
+    #     'type': 'categorical',
+    #     'choices': [None, 0.1, 0.2, 0.3],
+    # },
+    # {
+    #     'name': 'max_capacitance_ff',
+    #     'type': 'categorical',
+    #     'choices': [None, 0.1, 0.2, 0.3],
+    # }
 ]
 
 

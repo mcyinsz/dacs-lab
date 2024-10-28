@@ -91,8 +91,17 @@ def get_syn_options() -> dict:
     """
     syn_configs = {
         'genus_bin': GENUS_BIN,
-        'max_threads': 1,
+        'max_threads': 1,  # increase this option to speed up
         'steps': ['syn', 'report'],
+
+        # fanout constraint: int
+        "max_fanout": None,
+
+        # transition constraint: float
+        "max_transition_ns": None,
+
+        # capacitance constraint: float
+        "max_capacitance_ff": None,
         
         ###########################################################################
         # TODO: modify the following synthesis options
@@ -110,20 +119,12 @@ def get_syn_options() -> dict:
         # post-synthesis optimization effort: [None/low/medium/high]
         'syn_opt_effort': None,
 
-        # fanout constraint: int
-        "max_fanout": None,
-
-        # transition constraint: float
-        "max_transition_ns": None,
-
-        # capacitance constraint: float
-        "max_capacitance_ff": None,
     }
 
     # TODO: we randomly sample synthesis options here
     # you can use other methods to sample the synthesis options
     genus_config_space = BaseDesignSpace(CADENCE_GENUS_DESIGN_SPACE)
-    syn_configs.update(genus_config_space.generate_design_point_by_random(seed=int(time())))
+    syn_configs.update(genus_config_space.generate_design_point_by_random(seed=int(time() * 1e9)))
 
     return syn_configs
 
@@ -134,7 +135,7 @@ def get_pnr_options() -> dict:
     """
     pnr_configs = {
         'innovus_bin': INNOVUS_BIN,
-        'max_threads': 1,
+        'max_threads': 1,  # increase this option to speed up
         'steps': [
             'init',
             'floorplan',
@@ -208,7 +209,7 @@ def get_pnr_options() -> dict:
     # TODO: we randomly sample pnr options here
     # you can use other methods to sample the pnr options
     innovus_config_space = BaseDesignSpace(CADENCE_INNOVUS_DESIGN_SPACE)
-    pnr_configs.update(innovus_config_space.generate_design_point_by_random(seed=int(time())))
+    pnr_configs.update(innovus_config_space.generate_design_point_by_random(seed=int(time() * 1e9)))
 
     return pnr_configs
 
@@ -228,7 +229,6 @@ def main(*args, **kwargs):
         Run the complete EDA flow for final PPA
     """
 
-    # design_config = get_test_design_config()
     design_config = get_design_config()
     tech_config = get_tech_config()
     syn_options = get_syn_options()
@@ -263,6 +263,6 @@ def main(*args, **kwargs):
 
 
 if __name__ == '__main__':
-    main()
-    # with Pool(32) as p:
-        # p.map(main, range(1000))
+    # main()
+    with Pool(32) as p:
+        p.map(main, range(1000))
