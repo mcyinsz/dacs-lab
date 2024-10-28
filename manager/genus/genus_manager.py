@@ -246,19 +246,19 @@ set_clock_groups -asynchronous  -group ${clk_name}
         max_transition_ns = self.configs.get('max_transition_ns', None)
         if max_transition_ns:
             codes += """
-set_max_transition %.2f
+#set_max_transition %.2f
 """ % (max_transition_ns * 1000)  # ps
             
         max_capacitance_ff = self.configs.get('max_capacitance_ff', None)
         if max_capacitance_ff:
             codes += """
-set_max_capacitance %.2f
+#set_max_capacitance %.2f
 """ % max_capacitance_ff
             
         max_fanout = self.configs.get('max_fanout', None)
         if max_fanout:
             codes += """
-set_max_fanout %d
+#set_max_fanout %d
 """ % max_fanout
             
         max_leakage_power_uw = self.configs.get('max_leakage_power_uw', None)

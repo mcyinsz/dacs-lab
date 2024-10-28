@@ -41,13 +41,13 @@ class MetricParser():
         with open(self.setup_timing_rpt, 'r') as f:
             for line in f.readlines():
                 if line.startswith('Worst negative slacks(WNS)'):
-                    self.setup_slack = float(re.findall(r'\d+\.?\d*', line)[0])
+                    self.setup_slack = float(re.findall(r'-?\d+\.?\d*', line)[0])
 
     def parse_hold_timing(self):
         with open(self.hold_timing_rpt, 'r') as f:
             for line in f.readlines():
                 if line.startswith('Worst negative slacks(WNS)'):
-                    self.hold_slack = float(re.findall(r'\d+\.?\d*', line)[0])
+                    self.hold_slack = float(re.findall(r'-?\d+\.?\d*', line)[0])
 
     def generate_report(self):
         self.parse_area()

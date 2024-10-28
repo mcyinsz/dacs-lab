@@ -59,7 +59,7 @@ def get_design_config() -> dict:
 
     design_config = {
         'verilog_files': verilog_files,
-        'top_module': 'ibex_core',
+        'top_module': 'ibex_if_stage', # ibex_if_stage, ibex_ex_block
         'clk_name': 'core_clock',
         'clk_port_name': 'clk_i',
     }
@@ -228,8 +228,8 @@ def main(*args, **kwargs):
         Run the complete EDA flow for final PPA
     """
 
-    design_config = get_test_design_config()
-    # design_config = get_design_config()
+    # design_config = get_test_design_config()
+    design_config = get_design_config()
     tech_config = get_tech_config()
     syn_options = get_syn_options()
     pnr_options = get_pnr_options()
