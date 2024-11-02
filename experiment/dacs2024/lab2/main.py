@@ -263,6 +263,6 @@ def main(*args, **kwargs):
 
 
 if __name__ == '__main__':
-    # main()
-    with Pool(32) as p:
-        p.map(main, range(1000))
+    main()
+    # with Pool(32) as p:
+    #     p.map(main, range(1000))
