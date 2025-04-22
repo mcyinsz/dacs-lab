@@ -226,6 +226,11 @@ set clk_period_ps %.1f
 set input_delay_ps %.1f
 set output_delay_ps %.1f
 
+set_false_path -from [get_ports "reset"] 
+set_false_path -to [get_ports "reset"]
+set_false_path -from [get_ports "active"] 
+set_false_path -to [get_ports "active"]
+
 create_clock -period ${clk_period_ps} -name $clk_name [get_ports ${clk_port_name}]
 set_input_delay $input_delay_ps -clock $clk_name [all_inputs -no_clock]
 set_output_delay $output_delay_ps -clock $clk_name [all_outputs]
@@ -258,7 +263,7 @@ set_max_capacitance %.2f
         max_fanout = self.configs.get('max_fanout', None)
         if max_fanout:
             codes += """
-set_max_fanout %d
+set_max_fanout %d [current_design]
 """ % max_fanout
             
         max_leakage_power_uw = self.configs.get('max_leakage_power_uw', None)
