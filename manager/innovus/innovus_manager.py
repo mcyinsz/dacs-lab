@@ -288,6 +288,15 @@ floorPlan -site %s -su 1 %f 1 1 1 1
     self.configs.get('place_site'),
     self.configs.get('place_utilization', 0.4),
 )
+        codes += """
+# -------------------------------------------------------------
+# Automatic place MACROs
+# -------------------------------------------------------------
+
+setPlanDesignMode  -boundaryPlace true -effort high -congAware true -macroSpacing 20    
+planDesign
+
+"""
         """
             Place the IO pins.
             For simplicity, we place these pins during placement, and do layer assignment.
