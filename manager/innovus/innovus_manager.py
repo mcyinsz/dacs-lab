@@ -283,7 +283,9 @@ checkDesign -netList -noHtml -outfile %s
 # -------------------------------------------------------------
 # Define the block die area
 # -------------------------------------------------------------
-floorPlan -site %s -su 1 %f 1 1 1 1
+# floorPlan -site s -su 1 f 1 1 1 1
+
+floorPlan -site %s -r 1.0 %f 10 10 10 10
 """ % (
     self.configs.get('place_site'),
     self.configs.get('place_utilization', 0.4),
@@ -515,7 +517,10 @@ setPlaceMode -place_global_uniform_density %s
 # -------------------------------------------------------------
 place_opt_design
 reportCongestion -overflow
-""" 
+checkPlace -verbose %s
+""" % (
+    os.path.join(self.report_dir, 'checkPlace.rpt')
+)
         codes += self.generate_timing_report_code(stage='preCTS')
         codes += self.generate_area_report_code(stage='preCTS')
         codes += self.generate_power_report_code(stage='preCTS')
