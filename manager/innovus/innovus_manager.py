@@ -283,7 +283,6 @@ checkDesign -netList -noHtml -outfile %s
 # -------------------------------------------------------------
 # Define the block die area
 # -------------------------------------------------------------
-# floorPlan -site s -su 1 f 1 1 1 1
 
 floorPlan -site %s -r 1.0 %f 10 10 10 10
 """ % (
