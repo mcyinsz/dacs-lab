@@ -637,6 +637,7 @@ routeDesign -globalDetail
 # post routing opt
 # -------------------------------------------------------------
 optDesign -postRoute -setup
+optDesign -postRoute -hold
 """
         codes += self.generate_timing_report_code(stage='postRoute')
         codes += self.generate_area_report_code(stage='postRoute')
